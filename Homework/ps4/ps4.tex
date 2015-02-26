@@ -144,6 +144,15 @@ I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
 Set \num}
 \fi
 
+\lstset{ %
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+escapechar=?,
+}
+
 \newproblem{Heaps and The 2nd Max}{12 points}
 
 Recall that we defined a priority queue $S$ together with the following
@@ -198,53 +207,24 @@ However this runs in time $1+2\log n$. Your job is to find an
 pseudocode
 and formally analyze the correctness and runtime of your algorithm.
 
-\lstset{ %
-breaklines=true,        % sets automatic line breaking
-breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
-showtabs=false,                 % show tabs within strings adding particular underscores
-frame=single,           % adds a frame around the code
-tabsize=2,          % sets default tabsize to 2 spaces
-escapechar=?,
-}
-
 \ifnum\me<2
 \begin{solution}
 \begin{lstlisting}
 Find-2ndMax(S)
 	a = LEFT(1)
 	b = RIGHT(1)
-
-	// Case 1: no children available
-	if ((a == NULL) && (b == NULL))
-		?{\bf RETURN}? NULL
-	endif
-	// Case 2: one child available
-	elseif (a == NULL)
-		?{\bf RETURN}? b
-	endelseif
-	elseif (b == NULL)
-		?{\bf RETURN}? a
-	endelseif
-	// Case 3: both children available
-	else
-		?{\bf RETURN}? Max(a, b)
-	endelse
+	
+	?{\bf RETURN}? Max(a, b)
 ?{\bf END}? Find-2ndMax
 \end{lstlisting}
 
 Correctness: 
 
-	Case Proofs:
-
-\hspace{.05\textwidth}Case 1: There is no 2nd value in the HEAP, in which case it returns NULL.
-		
-\hspace{.05\textwidth}Case 2: There is only one child of the max value (2nd highest priority by definition of a max-heap), returns the child.
-		
-\hspace{.05\textwidth}Case 3: There are two children of the max value (two potential highest values), returns the maximum of the two values.
+Left(1) gets the first value to be compared for the maxSecond value, while Right(1) gets the second value to be compared. As this is a maxHeap, we return the larger value of these two.
 
 Runtime: 
 
-$T(n) = \Theta(1)$
+$T(n) = \Theta(1)$, as there is only one comparison that is done.
 \end{solution}
 \fi
 
@@ -264,6 +244,16 @@ Find-2ndMax(S)
 	?{\bf RETURN}? b
 ?{\bf END}? Find-2ndMax
 \end{lstlisting}
+
+Correctness:
+
+By extracting the first and second values, and then putting the first value back into the heap, we have managed to extract the second value, and only the second value.
+
+Runtime:
+
+$T(n) = 3\log n$
+
+$T(n) = \Theta(\log n)$, as both extract-Max and Insert methods required $\log n$ time.
 \end{solution}
 \fi
 
@@ -274,9 +264,33 @@ the one from part $(b)$?
 \hint{Consider using {\sc Max-Heapify}.}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
-\fi
+\begin{solution}
+\newpage
+\begin{lstlisting}
+Find-2ndMax(S)
+	a, b = max(LEFT(1), RIGHT(1))
+	swap(a, S[S.length])
+	Remove(S)
+	Max-Heapify(S, a)
+	?{\bf RETURN}? b
+?{\bf END}? Find-2ndMax
+\end{lstlisting}
 
+Correctness:
+
+By identifying the maximum value of the left and right child of the root, we find the 2nd maximum. In order to extract the node in $\Theta(\log n)$, we swap the maximum value that we found, and swap it with the node at the bottom of the heap. We then remove the heap, and since we already initialized a variable to the maximum value, all we need to do is maxHeapify the priority queue, drifting the bottom-right value down the tree. We then return the variable that was initialized to the maximum value.
+
+Runtime:
+
+$T(n) = \log n + 3$
+
+$T(n) = \Theta(\log n)$
+
+Comparison to solution in (b):
+
+In practice the solution given in (c) may be faster than (b) due to a lower constant, however when dealing with asymptotic runtimes, it should be noted that both algorithms perform in $\Theta(\log n)$
+\end{solution}
+\fi
 \end{itemize}
 
 \newproblem{Fast $k$-way Merging}{16 (+8) points}
@@ -292,7 +306,36 @@ Extract-Min} and {\sc Insert}.
 
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+\begin{lstlisting}
+#define each node in the heap to contain:
+	value
+	parent
+	left
+	right
+	indexNumber
+	arrayNumber
+
+mergekArrays(S)
+
+	B[] = [k]
+	for i = 1 to k
+		b[i] = ?$A_i[1]$?
+	endfor
+	
+	C[] = [n]
+	H = BUILD-HEAP(B)
+	for j = 1 to n
+		minValue = EXTRACT-MIN(H)
+		C[i] = minValue
+		if ?$A_{minValue.arrayNumber}$?[minValue.indexNumber + 1] < k
+			INSERT(H, ?$A_{minValue.arrayNumber}$?[minValue.indexNumber + 1])
+	endfor
+	
+	?{\bf RETURN}? C
+?{\bf END}? mergekArrays
+\end{lstlisting}
+\end{solution}
 \fi
 
  \item[(b)] (8 points) Let the number of arrays $k=2$. Assume all $n$
@@ -306,7 +349,18 @@ array into $2$ sorted lists of size $n/2$, and then compute the latter
 number.}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+show number of leaves = number of ways to partition n element array into 2 sorted lists of size $n/2$:
+
+${n \choose {n/2}} \leq 2^h$
+
+$h \geq \log_2 \frac{2^n}{\Theta \sqrt{n}}$
+
+$h \geq n - 1/2\log_2 n$
+
+$h \geq n - O(\log n)$
+\end{solution}
 \fi
 
  \item[(c$^*$)] {\bf Extra Credit:} Show that any correct comparison-based
@@ -317,7 +371,14 @@ number.}
  your bound of part (b).
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+Since the two elements ($a_1$ and $a_2$) are from different sorted arrays, we must compare them to each other, in order to place them in the correct order. If they were instead in the same array (i.e. $A_1$), then there would be no need for the comparison, due to it being already sorted.
+
+Instance of 2-way merging which requires at least n - 1 comparisons:
+
+$<a_1, b_1, a_2, b_2, ..., a_n, b_n>$, in which $a_{1...n} \in A_1,$ and $b_{1...n} \in A_2$
+\end{solution}
 \fi
 
  \item[(d$^{**}$)] {\bf Extra Credit:} Show that for general $k$, any
@@ -328,7 +389,18 @@ number.}
  get messy...}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+For general k, any comparison-based k-way merging must take $\Omega(n \log k)$
+
+Instance of worst case k-way merging:
+
+$<a_1, b_1, c_1, ..., j_n, k_n>$
+
+As we have now a number of comparisons between each element from each of the arrays, there are now instead $\log k$ comparisons required for each set of arrays, and for n values, that would result in a runtime of:
+
+$T(n) = n \log k$
+
+\end{solution}
 \fi
 
 \end{itemize}
@@ -349,7 +421,41 @@ no such comparison-based priority queue can exist.\\
 $n! \approx \left(\frac{n}{e} \right)^n$ (where $e$ is euler's constant)}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+For any comparison-based priority queue, if  priorityQueueSort is less than $T(n) = \Theta(n \log n)$, then it is not physically possible, or it is not a comparison based sort, as no comparison-based sort can be faster than $T(n) = \Theta(n \log n)$
+
+\begin{lstlisting}
+PriorityQueueSort(A[])
+H = BUILDHEAP(A)
+
+n = A.length
+for i = 1 to n
+	INSERT(H, A[i])
+endfor
+
+B[] = [n]
+for j = 1 to n
+	B[j] = EXTRACTMAX(H)
+endfor
+
+?{\bf RETURN}? B
+\end{lstlisting}
+
+Runtime analysis:
+
+If $T(n) \leq \Theta(n \log n)$, then we have proved that their comparison-based priority queue is incorrect, or is not a queue.
+
+$T(n) = n + n*(INSERT\_TIME) + n*(EXTRACT\_MAX\_TIME)$
+
+$T(n) = n*(\log_2 \sqrt{n}) + n*(\sqrt{\log_2 n})$
+
+$T(n) = \frac{n}{2} \log_2 n + n*(\sqrt{\log_2 n})$
+
+$T(n) = n * (1 + \frac{1}{2} \log_2 n + \sqrt{\log_2 n})$
+
+As $1 + \frac{1}{2} \log_2 n + \sqrt{\log_2 n} \geq \log n$, this means that their runtime is thus physically impossible, or is not a comparison-based priority queue. 
+\end{solution}
 \fi
 
 
