@@ -1,0 +1,426 @@
+%me=0 student solutions (ps file), me=1 - my solutions (sol file), me=2 - assignment (hw file)
+\def\me{0}
+\def\num{7}  %homework number
+\def\due{Wednesday, April 1}  %due date
+\def\course{CSCI-UA.0310-004/005 Basic Algorithms} %course name, changed only once
+\def\name{Jason Yao}   %student changes (instructor keeps!)
+%
+\iffalse
+INSTRUCTIONS: replace # by the homework number.
+(if this is not ps#.tex, use the right file name)
+
+  Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate TeX code.  Once you are done with your file, run
+
+  ``latex ps#.tex''
+
+from a UNIX prompt.  If your LaTeX code is clean, the latex will exit
+back to a prompt.  To see intermediate results, type
+
+  ``xdvi ps#.dvi'' (from UNIX prompt)
+  ``yap ps#.dvi'' (if using MikTex in Windows)
+
+after compilation. Once you are done, run
+
+  ``dvips ps#.dvi''
+
+which should print your file to the nearest printer.  There will be
+residual files called ps#.log, ps#.aux, and ps#.dvi.  All these can be
+deleted, but do not delete ps1.tex. To generate postscript file ps#.ps,
+run
+
+  ``dvips -o ps#.ps ps#.dvi''
+
+I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
+\fi
+%
+\documentclass[11pt]{article}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{latexsym}
+
+\usepackage{tikz}
+
+\setlength{\oddsidemargin}{.0in}
+\setlength{\evensidemargin}{.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{#1, Page \arabic{page}}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { {\bf \course} \hfill #2 }
+       \vspace{4mm}
+       \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { {\it #3 \hfill #4} }
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcommand{\prob}{\arabic{pppp}}  %problem number
+\newcommand{\increase}{\addtocounter{pppp}{1}}  %problem number
+
+%first argument desription, second number of points
+\newcommand{\newproblem}[2]{
+\ifnum\me=0
+\ifnum\prob>0 \newpage \fi
+\increase
+\setcounter{page}{1}
+\handout{\name, Homework \num, Problem \arabic{pppp}}{\today}{Name: \name}{Due:
+\due}{Solutions to Problem \prob\ of Homework \num\ (#2)}
+\else
+\increase
+\section*{Problem \num-\prob~(#1) \hfill {#2}}
+\fi
+}
+
+%\newcommand{\newproblem}[2]{\increase
+%\section*{Problem \num-\prob~(#1) \hfill {#2}}
+%}
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+        \vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+                      {\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution Sketch:}}
+                      {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+{\end{tabbing}}
+
+\newcommand{\eqref}[1]{Equation~(\ref{eq:#1})}
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+%Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+\newcommand{\For}{\mbox{\bf For }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\Do}{\mbox{\bf Do }}
+\newcommand{\If}{\mbox{\bf If }}
+\newcommand{\Then}{\mbox{\bf Then }}
+\newcommand{\Else}{\mbox{\bf Else }}
+\newcommand{\While}{\mbox{\bf While }}
+\newcommand{\Repeat}{\mbox{\bf Repeat }}
+\newcommand{\Until}{\mbox{\bf Until }}
+\newcommand{\Return}{\mbox{\bf Return }}
+\newcommand{\Swap}{\mbox{\bf Swap }}
+
+\begin{document}
+
+\ifnum\me=0
+%\handout{PS\num}{\today}{Name: Jason Yao}{Due:
+%\due}{Solutions to Problem Set \num}
+%
+%I collaborated with *********** INSERT COLLABORATORS HERE (INDICATING
+%SPECIFIC PROBLEMS) *************.
+\fi
+\ifnum\me=1
+\handout{PS\num}{\today}{Name: Jason Yao}{Due: \due}{Solution
+{\em Sketches} to Problem Set \num}
+\fi
+\ifnum\me=2
+\handout{PS\num}{\today}{Lecturer: Yevgeniy Dodis}{Due: \due}{Problem
+Set \num}
+\fi
+
+\lstset{ %
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+escapechar=?,
+}
+
+\newproblem{Free-Pizza Collector}{10 points}
+
+Assume that you attend a boring science convention that takes place in a conference center that is a $m$ by $n$ rectangle with a mini-exhibition at each corner. To attract customers, each exhibition offers a certain number of free pizza slices to passing customers. You want to move from north-west corner  to the south-east corner of the conference center. Since you do not want to spend too much time there, in each step you may either move south or east.
+Your goal is to maximize the total number of free pizza slices you can get.
+
+More formally, if you pass by the corner exhibition located at $(i,j)$ where $0 \leq i \leq m$ and
+$0 \leq j \leq n$, you get $p(i,j)$ slices of pizza.
+You are told all of the $p(i, j)$ a priori.
+Your goal is to design a path from $(0,0)$ to $(m,n)$ allowing you to consume as much of pizza as you can!
+
+Give an efficient  (i.e., polynomial in $m$ and $n$) dynamic programming algorithm for this problem, and analyze its running time.
+
+\ifnum\me<2
+\begin{solution}
+
+\begin{lstlisting}
+int B[][];
+char reversedMap[];
+
+int, char[] getPizzaDriver(m, n)
+	B[][] = [m][n]
+	B[0][0] = p(0, 0)
+	maxPizza = getPizza(0, 1)
+	
+	for i = 1 to n/2
+		swap (reversedMap[i], reversedMap[i + n/2])
+	?{\bf RETURN}? (maxPizza, reversedMap)
+?{\bf END}? getPizzaDriver
+	
+int getPizza(i,j)	
+	if (i == 0)
+		B[i][j] = B[i][j - 1] + p(i, j)
+	elseif (j == 0)
+		B[i][j] = B[i - 1][j] + p(i, j)
+	else
+		if (B[i][j - 1] < B[i - 1][j])
+			B[i][j] = B[i - 1][j] + p(i, j)
+			map += 'S'		
+		else
+			B[i][j] = B[i][j - 1] + p(i,j)
+			map += 'E'
+	if ((i == m) && (j == n))
+		?{\bf RETURN}? B[m][n]	
+	elseif (j ?$\leq$? n)
+		?{\bf RETURN}? getPizza(i, j + 1)
+	else
+		?{\bf RETURN}? getPizza(i + 1, 0)
+?{\bf END}? getPizza
+\end{lstlisting}
+\end{solution}
+\fi
+
+\newproblem{Ponyless Zone}{12 points}
+
+You have an $n\times n$ square field. Unfortunately, in some of the squares there is a beautiful little pony. You have two friends Jerry and Elaine who do not like ponies, so you want to find some (possibly) smaller square included in the original field that is completely ponyless.
+
+More formally, you are given an $n\times n$ matrix $A$ of bits, where A$[i][j] = 1$ iff there is a pony in a square at position $(i,j)$. Find an efficient dynamic programming algorithm for finding the biggest possible ponyless sub-square in your field.
+
+Define an auxiliary $n \times n$ matrix $B$ such that $B[i][j]$ memoizes the length (which is the same as the width) of the biggest possible
+ponyless square with the bottom-right corner at position $(i,j)$.
+
+\begin{itemize}
+\item[(a)] (4 points) Show a recursive relationship between $B[i][j]$ and $B[i-1][j-1]$. Based on this, find $O(n^3)$ dynamic programming algorithm for computing the matrix $B$.
+
+\begin{lstlisting}
+badPonyCheck(A)
+maxLength = 0
+n = A.length
+B[][] = [n][n]
+for i = 1 to n
+	for j = 1 to n
+		if (A[i][j] == 1)
+			B[i][j] = 1
+		else
+			B[i][j] = B[i - 1][j - 1] + 1
+			for k = 1 to (B[i][j] - 1)
+				if (B[k][j] == 1)
+					B[i][j] = 1
+				if (B[i][k] == 1)
+					B[i][j] = 1
+					
+				if (maxLength < B[i][j])
+					maxLength = B[i][j]
+			endfor
+		endelse
+	endfor
+endfor
+?{\bf END}? badPonyCheck
+\end{lstlisting}
+
+\item[(b)] (7 points) Show a recursive relationship between $B[i][j]$ and $(B[i-1][j], B[i][j-1])$.  Based on this, find a faster $O(n^2)$ dynamic programming  for computing the matrix $B$.
+
+
+\ifnum\me<2
+\begin{solution}
+\begin{lstlisting}
+int betterPonyCheck(A)
+maxLength = 0
+n = A.length
+B[][] = [n][n]
+for i = 1 to n
+	for j = 1 to n
+		if (A[i][j] == 1)
+			B[i][j] = 1
+		else if ((i == 1) && (j == 1))
+			B[i][j] = 1
+		elseif (i == 1)		
+			B[i][j] = B[i][j - 1] + 1
+		elseif (j == 1)
+			B[i][j] = B[i - 1][j] + 1
+		elseif (B[i - 1][j] == B[i][j - 1])
+			B[i][j] = B[i - 1][j - 1] + 1
+		endelseif
+		
+		if (maxLength < B[i][j])
+			maxLength = B[i][j]
+		endif
+	endfor
+endfor
+?{\bf RETURN}? maxLength
+?{\bf END}? betterPonyCheck
+\end{lstlisting}
+\end{solution}
+\fi
+
+
+\item[(c)] (1 point) Explain how to give the final solution to the original problem, assuming you already computed $B$. What is the final time complexity for the best final solution?
+
+\ifnum\me<2
+\begin{solution}
+
+If we are already given B, then T(n) = O(1), since all we need to do is return the value that we kept incrementing during our algorithm, as that will have the largest value of ponyless squares that we have found so far.
+\end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Fibonacci in Linear Time}{8 points}
+Recall, Fibonacci number $F_0,F_1,F_2,...$ are defined by setting
+$F_0=F_1=1$, and $F_i = F_{i-1} + F_{i-2}$, for $i\ge 2$. Ignoring the
+issue of $F_n$ being exponentially large, one can easily compute $F_n$
+in linear time:
+
+\begin{code}
+\> $F_0 = F_1 = 1$ \\
+\> \For $i = 2$ \To $n$ \\
+\> \> $F[i] := F[i-1] + F[i-2]$
+\end{code}
+%
+One can also write a recursive procedure:
+%
+\begin{code}
+{\sc Fib}$(n)$:\\
+\> \If $n=0$ or $n=1$ \Return 1\\
+\> \Else \Return ({\sc Fib}$(n-1)$ + {\sc Fib}$(n-2)$)
+\end{code}
+
+\begin{itemize}
+
+\item[(a)] Let $T(n)$ be the running time of {\sc Fin}$(n)$. Clearly,
+$T(n) = T(n-1) + T(n-2) + O(1)$. Prove by induction that $T(n) \ge
+c^n$, for some constant $c>1$. What is the largest value of $c$ that
+you can use in your induction?
+
+\ifnum\me=1
+\fi
+\begin{solution}
+
+T(n) = T(n - 1) + T(n - 2) + O(1)
+
+$T(n) \geq c^n$
+
+$T(n - 1) + T(n - 2) + O(1) \geq c^n$
+
+$c^{n - 1} + c^{n - 2} \geq c^n$, since Professor Dodis said it was alright to drop the O(1) term
+
+$c^n (\frac{1}{c} + \frac{1}{c^2}) \geq c^n$
+
+$\frac{1}{c} + \frac{1}{c^2} \geq 1$
+
+$c + 1 \geq c^2$
+
+$1 + c - c^2 \geq 0$
+
+By the quadratic formula,
+
+$c \geq  \frac{1}{2}(1 \pm \sqrt{5})$, but since $c > 1$,
+
+$c \geq  \frac{1}{2}(1 + \sqrt{5})$
+\end{solution}
+
+
+\item[(b)]  Using memoization, write a variant of the recursive
+procedure {\sc Fib} above, called {\sc Smart-Fib}, which will compute
+$F_n$ in time $O(n)$, like we expect a good procedure should.
+
+
+\ifnum\me=1
+\fi
+\begin{solution}
+
+
+
+\begin{lstlisting}
+B[];
+
+int smartFibDriver(n)
+	if (n < 2)
+		?{\bf RETURN}? 1
+	else
+		B = [n]
+		B[0] = B[1] = 1
+		?{\bf RETURN}? smartFib(n, 2)
+?{\bf END}? smartFibDriver
+
+int smartFib(n, counter)
+	if (counter == n)
+		?{\bf RETURN}? B[n - 1]
+	else
+		B[counter] = B[counter - 1] + B[counter - 2]
+		?{\bf RETURN}? smartFib(n, counter + 1)
+?{\bf END}? smartFib
+\end{lstlisting}
+\end{solution}
+
+
+\end{itemize}
+
+\newproblem{Finding LCS}{6 Points}
+
+Find the Longest Common Subsequence of the following two strings:
+$X=BARRACUDA$, $Y=ABRACADABRA$. (Notice, you need to find the actual LCS,
+not only its length.)
+
+\ifnum\me<2
+\begin{solution}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{solution}
+\fi
+
+
+
+\end{document}

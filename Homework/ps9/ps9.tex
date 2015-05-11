@@ -1,0 +1,414 @@
+%me=0 student solutions (ps file), me=1 - my solutions (sol file), me=2 - assignment (hw file)
+\def\me{0}
+\def\num{9}  %homework number
+\def\due{Wednesday, April 15}  %due date
+\def\course{CSCI-UA.0310-004/005 Basic Algorithms} %course name, changed only once
+\def\name{Jason Yao}   %student changes (instructor keeps!)
+%
+\iffalse
+INSTRUCTIONS: replace # by the homework number.
+(if this is not ps#.tex, use the right file name)
+
+  Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate TeX code.  Once you are done with your file, run
+
+  ``latex ps#.tex''
+
+from a UNIX prompt.  If your LaTeX code is clean, the latex will exit
+back to a prompt.  To see intermediate results, type
+
+  ``xdvi ps#.dvi'' (from UNIX prompt)
+  ``yap ps#.dvi'' (if using MikTex in Windows)
+
+after compilation. Once you are done, run
+
+  ``dvips ps#.dvi''
+
+which should print your file to the nearest printer.  There will be
+residual files called ps#.log, ps#.aux, and ps#.dvi.  All these can be
+deleted, but do not delete ps1.tex. To generate postscript file ps#.ps,
+run
+
+  ``dvips -o ps#.ps ps#.dvi''
+
+I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
+\fi
+%
+\documentclass[11pt]{article}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{latexsym}
+
+%\usepackage{tikz}
+
+\setlength{\oddsidemargin}{.0in}
+\setlength{\evensidemargin}{.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{#1, Page \arabic{page}}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { {\bf \course} \hfill #2 }
+       \vspace{4mm}
+       \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { {\it #3 \hfill #4} }
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcommand{\prob}{\arabic{pppp}}  %problem number
+\newcommand{\increase}{\addtocounter{pppp}{1}}  %problem number
+
+%first argument desription, second number of points
+\newcommand{\newproblem}[2]{
+\ifnum\me=0
+\ifnum\prob>0 \newpage \fi
+\increase
+\setcounter{page}{1}
+\handout{\name, Homework \num, Problem \arabic{pppp}}{\today}{Name: \name}{Due:
+\due}{Solutions to Problem \prob\ of Homework \num\ (#2)}
+\else
+\increase
+\section*{Problem \num-\prob~(#1) \hfill {#2}}
+\fi
+}
+
+%\newcommand{\newproblem}[2]{\increase
+%\section*{Problem \num-\prob~(#1) \hfill {#2}}
+%}
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+        \vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+                      {\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution Sketch:}}
+                      {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+{\end{tabbing}}
+
+\newcommand{\eqref}[1]{Equation~(\ref{eq:#1})}
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+%Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+\newcommand{\For}{\mbox{\bf For }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\Do}{\mbox{\bf Do }}
+\newcommand{\If}{\mbox{\bf If }}
+\newcommand{\Then}{\mbox{\bf Then }}
+\newcommand{\Else}{\mbox{\bf Else }}
+\newcommand{\While}{\mbox{\bf While }}
+\newcommand{\Repeat}{\mbox{\bf Repeat }}
+\newcommand{\Until}{\mbox{\bf Until }}
+\newcommand{\Return}{\mbox{\bf Return }}
+\newcommand{\Swap}{\mbox{\bf Swap }}
+
+\begin{document}
+
+\ifnum\me=0
+%\handout{PS\num}{\today}{Name: Jason Yao}{Due:
+%\due}{Solutions to Problem Set \num}
+%
+%I collaborated with *********** INSERT COLLABORATORS HERE (INDICATING
+%SPECIFIC PROBLEMS) *************.
+\fi
+\ifnum\me=1
+\handout{PS\num}{\today}{Name: Jason Yao}{Due: \due}{Solution
+{\em Sketches} to Problem Set \num}
+\fi
+\ifnum\me=2
+\handout{PS\num}{\today}{Lecturer: Yevgeniy Dodis}{Due: \due}{Problem
+Set \num}
+\fi
+
+
+\newproblem{Frugal Tourist}{12 Points}
+
+You want to travel on a straight line from from city $A$ to city $B$
+which is $N$ miles away from $A$. For concreteness, imagine a line
+with $A$ being at $0$ and $B$ being at $N$. Each day you can travel at
+most $d$ miles (where $0<d<N$), after which you need to stay at an
+expensive hotel. There are $n$ such hotels between $0$ and $N$,
+located at points $0 <a_1<a_2<\ldots < a_n = N$ (the last hotel is in
+$B$). Luckily, you know that $|a_{i+1}-a_i|\le d$ for any $i$ (with
+$a_0=0$), so that you can at least travel to the next hotel in one
+day. You goal is to complete your travel in the smallest number of
+days (so that you do not pay a fortune for the hotels).
+
+Consider the following greedy algorithm: ``Each day, starting at the
+current hotel $a_i$, travel to the furthest hotel $a_j$
+s.t. $|a_j-a_i|\le d$, until eventually $a_n=N$ is reached''. I.e., if
+several hotels are within reach in one day from your current position,
+go to the one closest to your destination.
+
+\begin{itemize}
+\item[(a)] (6 points) Formally argue that this algorithm is correct using the
+``Greedy Stays Ahead'' method.\\
+\hint{Think how to define $F_i(Z)$.
+For this problem, the name of the method is really appropriate.}
+
+\ifnum\me<2
+\begin{solution}
+We define $F_i(z) = $distance from B
+
+$F_i(z) = N - a_i$
+
+Show for each step $i$, $greedy_{ai}$ will be further out or equal to $OPT_{ai}$
+
+Base case:
+By the definition of the greedy algorithm, we see that $greedy_{a1} \geq OPT_{a1}$
+
+Induction step:
+Assuming $greedy_{a1}$ is already ahead from $a_1$, and we continue going d to the next step, $greedy_{ai} \geq OPT_{ai}$.
+
+Since the distance traveled is $\leq d$, $greedy_{a(i + 1)} \geq OPT_{a(i + 1)}$
+\end{solution}
+\fi
+
+\item[(b)] (6 points) Formally argue that this algorithm is correct using the
+``Local Swap'' method. More concretely, given some hypothetical
+optimal solution $Z$ of size $k$ and the solution $Z^*$ output by
+greedy, define some solution $Z_1$ with the following two properties:
+(1) $Z_1$ is no worse than $Z$; (2) $Z_1$ agrees with greedy in the
+first day travel plan. After $Z_1$ is defined, define $Z_2$ s.t.: (1)
+$Z_2$ is no worse than $Z_1$; (2) $Z_2$ agrees with greedy in the
+first two days travel plan. And so on until you eventually reach
+greedy.
+
+\ifnum\me<2
+\begin{solution}
+
+Z = OPT, Z* = Greedy
+
+$Z_1 = $no worse than Z, so 
+
+$Z_1 = Z^*_1 + Z_2 + ... + Z_k$
+
+$Z_2 = Z^*_1 + Z^*_2 + Z_3 + ... + Z_k$
+
+$Z_p = Z^*_1 + Z^*_2 + ... + Z^*_p + Z_{p + 1} + ... + Z_k$, for p: $1 \leq p \leq k$.
+
+Thus, when p == k,
+$Z_k = Z^*_1 + Z^*_2 + ... + Z^*_k$
+
+\end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Fibonacci meets Huffman} {10 points}
+
+Recall, Fibonacci numbers are defined by $f_0= f_1=1$ and $f_i =
+f_{i-1} + f_{i-2}$ for $i\ge 2$.
+
+\begin{itemize}
+\item[(a)] (2 points) What is the optimal Huffman code for the following set
+of frequencies which are the first $8$ Fibonacci numbers.
+\ifnum\me<2
+\begin{solution}
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+
+\end{solution}
+\fi
+
+\item[(b)] (4 points) Let $S_1 = 2  = f_0 + f_1$ and $S_i = S_{i-1} + f_i =
+\ldots = f_i + f_{i-1} + \ldots f_1 + f_0$ (for $i>1$) be the sum of the
+first $i$ Fibonacci numbers. Prove that $S_i = f_{i+2} -1$ for any $i\ge
+1$.
+
+\ifnum\me<2
+\begin{solution}
+
+Show $S_i = S_{i - 1} + f_i = f_i - + f_{i - 1} + ... + f_1 + f_0 = f_{i + 2} - 1$
+
+Base case: Let i = 1
+
+$S_1 = f_1 + f_0 = f_3 - 1$
+
+$S_1 = 1 + 1 = 3 - 1$
+
+$S_1 = 2 = 2$
+
+Assume for all $S_i$ is true
+
+$S_{i + 1} = (S_i + f_{i + 1})$
+
+$S_{i + 1} = (f_{i + 2} - 1) + f_{i + 1}$
+
+$S_{i + 1} = f_{i + 3} - 1$
+
+\end{solution}
+\fi
+
+\item[(c)] (4 points) Generalize your solution to part (a) to find the shape of
+the optimal Huffman code for the first $n$ Fibonacci numbers.
+Formally argue that your tree structure is correct, by using part (b).
+
+\ifnum\me<2
+\begin{solution}
+
+By part b, we have shown that for all $S_i$, in which $i \geq 2$, $S_i$ has two children, namely $S_{i - 1}$ and $f_i$. Thus the tree structure is that of a very long, unbalanced tree that slopes in one direction. Assuming that this is a BST, it would slop down to to the left, since $f_i$ would be on the right, and $S_{i - 1}$ the child on the left.
+\end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Difficult packaging} {12 points}
+
+You have $n$ items of weights $w_1, \ldots, w_n$ that you want to pack. You can use boxes of capacity $u$ each. (You can assume that $w_i \leq u$ for all $i$). You are allowed to put {\em at most two} items in a box (even if more than two could fit!). Your goal is to pack all $n$ items using the {\em smallest possible} total number of boxes. Consider the following idea for a greedy solution:
+
+(1) Take the lightest remaining item $a$; (2) find the heaviest item $b$ (if it exists) that will fit in one box with $a$; (3) Pack these two elements $a$ and $b$ into one box (if no $b$ exists, just pack $a$); (4) repeat steps (1)-(3) with the remaining items.
+
+\begin{itemize}
+\item[(a)] (6 points)
+Assume that the input weights are already sorted: $w_1\le w_2\le \ldots \le w_n$. Write the fastest pseudocode you an find to implement the above described solution. (You will get full credit only for an $O(n)$ algorithm.)
+\ifnum\me<2
+\begin{solution}
+
+\lstinputlisting[language=C]{problem3a.c}
+
+\end{solution}
+\fi
+
+\item[(b)] (6 points)
+Prove the correctness of this algorithm using Local Swap technique.
+\\ \hint{Think of the box containing the lightest item $a$ in the optimum solution.}
+
+\ifnum\me<2
+\begin{solution}
+
+For the general case:
+
+Let greedy algorithm be a + b, let OPT algorithm be x + y
+
+Show that all swaps of local hybrids are valid:
+
+case 1:
+
+(a, b), (x, y) $\rightarrow$ (x, b), (a, y) a swaps with x
+
+(x, b), (a, y) $\rightarrow$ (a, b), (x, y) b swaps with y
+
+Show that (x, b) and (a, y) are valid hybrids:
+
+$a + b \leq u \geq x + y$
+
+$a + b + x + y \leq 2u$
+
+a is the lightest item, and b is the heaviest item that still fits.
+
+Thus, $y \leq b$.
+
+$a + b + x + b \leq 2u$
+
+$x + b \leq u$
+
+If $x + b \leq u$, then from $a + b + x + b \leq 2u$,
+
+$a + y \leq u$
+
+Therefore (x, b) and (a, y) are both valid hybrids.
+
+case 2:
+
+(a, b), (x, y) $\rightarrow$ (y, b), (x, a) a swaps with y
+
+(y, b), (x, a) $\rightarrow$ (y, x), (b, a) b swaps with x
+
+Show that (y, b) and (x, a) are valid hybrids:
+$a + b \leq u \geq x + y$
+
+$a + b + x + y \leq 2u$
+
+By symmetry of the proof for case 1, and exchanging the symbols, we show that (y, b) and (x, a) are valid hybrids.
+\end{solution}
+\fi
+
+\item[(c)] ({\bf Extra credit}: ? points)
+Help the authors of this problem and come up with GASA proof for this algorithm.
+
+\end{itemize}
+
+\newproblem{Optimal Prefix-Free Encoding} {10 points}
+
+Recall the following two PFEs $E_1$ and $E_2$ discussed in class. Given a message $m$ of length $n$ (known to encoder), $E_1(m) = 0^n ~1~ m$; $E_2(m) = 0^{\lceil \log_2 n \rceil} 1~ \langle n \rangle_2 ~m$, where 
+$\langle n \rangle_2$ is the binary representation of integer $n$. Namely, $E_1$ encodes in unary the length of the string and then  the actual string, while the better encoding $E_2$ starts with encoding the length $n$ using $E_1$, and then putting actual string $m$. Recall also the overhead of $E_1$ is $n+1$ and the overhead of $E_2$ is $2\lceil \log_2 n \rceil +1 = 2\log_2 n + O(1)$.
+
+\begin{itemize}
+\item[(a)] (5 points)
+Extend the above idea one more iteration to design an encoding $E_3$ having overhead of $\log_2 n + 2 \log_2 \log_2 n + O(1)$.
+\ifnum\me<2
+\begin{solution}
+
+$E_3(m) = 0^{\log_2 \log_2 n}1 <\log_2 n>_2 <n>_2 m$
+
+Let H = overhead,
+
+$H = \log_2n + 2\log_2 \log_2 n + O(1)$
+\end{solution}
+\fi
+
+\item[(b)] (5 points)
+Now write a fully recursive procedure (instead of stopping it after a constant number of iterations) to get an encoding $E^*$ having overhead\footnote{Turns out this overhead is the best possible one can achieve in any PFE.}
+$$\log_2 n +  \log_2 \log_2 n + \log_2 \log_2 \log_2 n + \ldots + O(1)$$
+where the number of terms in the sum is the number of times one can take $\log_2$ of $n$ until one reaches $1$ (called inverse Ackerman function).
+
+\ifnum\me<2
+\begin{solution}
+
+$E_k(m) = 0^{\log_k ... \log n}1<\log_k...\log_1 n>_2
+<\log_{k-1} ... \log_1 n>_2 ... <\log n>_2 <n>_2 m $
+
+Let H = overhead,
+
+$H = \log_2n + \log_2\log_2n + ... + O(1)$
+\end{solution}
+\fi
+
+\end{itemize}
+
+\end{document}

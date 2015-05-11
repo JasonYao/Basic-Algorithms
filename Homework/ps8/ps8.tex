@@ -1,0 +1,391 @@
+%me=0 student solutions (ps file), me=1 - my solutions (sol file), me=2 - assignment (hw file)
+\def\me{0}
+\def\num{8}  %homework number
+\def\due{Wednesday, April 8}  %due date
+\def\course{CSCI-UA.0310-004/005 Basic Algorithms} %course name, changed only once
+\def\name{Jason Yao}   %student changes (instructor keeps!)
+%
+\iffalse
+INSTRUCTIONS: replace # by the homework number.
+(if this is not ps#.tex, use the right file name)
+
+  Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate TeX code.  Once you are done with your file, run
+
+  ``latex ps#.tex''
+
+from a UNIX prompt.  If your LaTeX code is clean, the latex will exit
+back to a prompt.  To see intermediate results, type
+
+  ``xdvi ps#.dvi'' (from UNIX prompt)
+  ``yap ps#.dvi'' (if using MikTex in Windows)
+
+after compilation. Once you are done, run
+
+  ``dvips ps#.dvi''
+
+which should print your file to the nearest printer.  There will be
+residual files called ps#.log, ps#.aux, and ps#.dvi.  All these can be
+deleted, but do not delete ps1.tex. To generate postscript file ps#.ps,
+run
+
+  ``dvips -o ps#.ps ps#.dvi''
+
+I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
+\fi
+%
+\documentclass[11pt]{article}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{latexsym}
+
+%\usepackage{tikz}
+
+\setlength{\oddsidemargin}{.0in}
+\setlength{\evensidemargin}{.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{#1, Page \arabic{page}}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { {\bf \course} \hfill #2 }
+       \vspace{4mm}
+       \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { {\it #3 \hfill #4} }
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcommand{\prob}{\arabic{pppp}}  %problem number
+\newcommand{\increase}{\addtocounter{pppp}{1}}  %problem number
+
+%first argument desription, second number of points
+\newcommand{\newproblem}[2]{
+\ifnum\me=0
+\ifnum\prob>0 \newpage \fi
+\increase
+\setcounter{page}{1}
+\handout{\name, Homework \num, Problem \arabic{pppp}}{\today}{Name: \name}{Due:
+\due}{Solutions to Problem \prob\ of Homework \num\ (#2)}
+\else
+\increase
+\section*{Problem \num-\prob~(#1) \hfill {#2}}
+\fi
+}
+
+%\newcommand{\newproblem}[2]{\increase
+%\section*{Problem \num-\prob~(#1) \hfill {#2}}
+%}
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+        \vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+                      {\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution Sketch:}}
+                      {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+{\end{tabbing}}
+
+\newcommand{\eqref}[1]{Equation~(\ref{eq:#1})}
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+%Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+\newcommand{\For}{\mbox{\bf For }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\Do}{\mbox{\bf Do }}
+\newcommand{\If}{\mbox{\bf If }}
+\newcommand{\Then}{\mbox{\bf Then }}
+\newcommand{\Else}{\mbox{\bf Else }}
+\newcommand{\While}{\mbox{\bf While }}
+\newcommand{\Repeat}{\mbox{\bf Repeat }}
+\newcommand{\Until}{\mbox{\bf Until }}
+\newcommand{\Return}{\mbox{\bf Return }}
+\newcommand{\Swap}{\mbox{\bf Swap }}
+
+\begin{document}
+
+\ifnum\me=0
+%\handout{PS\num}{\today}{Name: Jason Yao}{Due:
+%\due}{Solutions to Problem Set \num}
+%
+%I collaborated with *********** INSERT COLLABORATORS HERE (INDICATING
+%SPECIFIC PROBLEMS) *************.
+\fi
+\ifnum\me=1
+\handout{PS\num}{\today}{Name: Jason Yao}{Due: \due}{Solution
+{\em Sketches} to Problem Set \num}
+\fi
+\ifnum\me=2
+\handout{PS\num}{\today}{Lecturer: Yevgeniy Dodis}{Due: \due}{Problem
+Set \num}
+\fi
+\newcommand{\tab}[1]{\hspace{0.057\textwidth}\rlap{#1}}
+
+\lstset{ %
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+escapechar=?,
+}
+
+\newproblem{Text Alignment}{6 points}
+
+Using dynamic programming, find the optimum printing of the text ``I
+am a big fan of rats'', i.e. $\ell_1=1, \ell_2 = 2, \ell_3 =1,
+\ell_4 = 3, \ell_5 = 3, \ell_6 = 2, \ell_7=4$, with line length $L=10$ and
+penalty function $P(x) = x^3$. Make sure you justify all your steps
+(and not just state the answer without proof). Will the optimal
+printing you get be consistent with the strategy ``print the word on
+as long as it fits, and otherwise start a new line''?
+
+\ifnum\me<2
+\begin{solution}
+
+$P(x) = x^3$, $L = 10$
+
+$m(i) =$ minimized penalty
+
+$m(0) = 0$
+
+$m(1) =$ Printed "I", penalty = p(L - $\ell_1$), penalty = $9^3 = 729$
+
+$m(2) =$ Printed "I am", penalty = p(L - ($\ell_1$ + $\ell_2$), penalty = $6^3$ = 216
+
+$m(3) =$ Printed "I am a", penalty = p(L - ($\ell_1$ + $\ell_2$ + $\ell_3$), penalty = $4^3$ = 64
+
+$m(4) =$ Printed "I am a big", penalty = p(L - ($\ell_1$ + $\ell_2$ + $\ell_3$ + $\ell_4$), penalty = $0^3$ = 0
+
+$m(5) =$ min(m[4] + "fan", m[3] + "big fan", m[2] + "a big fan")
+
+\tab{$=$ min($0 + 7^3$, $64 + 3^3$, $216 + 1^3$)}
+
+\tab{$=$ min(343, 73, 217)}
+
+\tab{$=$ "I am a" / "big fan", penalty of 73}
+
+$m(6) =$ min(m[5] + "of", m[4] + "fan of", m[3] + "big fan of")
+
+\tab{$=$ min($4^3 + 3^3 + 8^3$, $0 + 6^3 + 0$, $4^3 + 0 + 0$)}
+
+\tab{$=$ min($64 + 27 + 512$, $0 + 64 + 0$, $64 + 0 + 0$)}
+
+\tab{$=$ min(603, 64, 64)}
+
+\tab{$=$ "I am a" / "big fan of" or "I am a big / fan of" , penalty is 64}
+
+$m(7) =$ min(m[6] + "rats", m[5] + "of rats")
+
+\tab{$=$ min($64 + 6^3$, $64 + 3^3 + 3^3$)}
+
+\tab{$=$ min(280, 118)}
+
+\tab{$=$ "I am a / big fan/ of rats", with penalty 118}
+
+This is the optimal solution (minimizing the penalty), since the greedy solution would have been "I am a big / fan of / rats", with a penalty of (0 + 64 + 216) = 280, which is much higher than the solution that we found.
+
+\end{solution}
+\fi
+
+\newproblem{Dividing Chocolate}{10 points}
+
+You have $m\times n$ chocolate bar. You are also given a matrix
+$\{p[i,j]\mid 1\le i\le m, 1\le j\le n\}$ telling you the price of the
+$i\times j$ chocolate bar. You are allowed to repeat the following
+procedure any number of times, starting initially with the single big
+$m\times n$ piece you have. Take one of the pieces you have and split
+it into two pieces by cutting it either vertically or
+horizontally. Say, $m=5$, $n=4$. You may first choose to split it into
+two pieces of size $3\times 4$ and $2\times 4$. Then you may take the
+$3\times 4$ piece and split it into two pieces $3\times 3$ and
+$3\times 1$. Finally, you may take the previous $2\times 4$ piece and
+split it into two $1\times 4$ pieces. If you stop, you have
+four pieces of sizes $3\times 3$, $3\times 1$, $1\times 4$ and
+$1\times 4$, which you can sell for $p[3,3]+p[3,1]+2p[1,4]$.
+You goal is to find a partition maximizing your total profit.
+
+\begin{itemize}
+
+\item[(a)] (5 points) Let $C[i,j]$ be the largest profit you can get by splitting
+an $i\times j$ piece, where $0\le i\le m$, $0\le j\le n$ and we set
+$C[i,0] = C[0,j]=0$. Write a recursive formula for $C[m,n]$ in terms
+of values $C[i,j]$, where either $i<m$ or $j<n$.
+
+\ifnum\me<2
+\begin{solution}
+\begin{lstlisting}
+c[m + 1][n + 1]
+		
+maxProfitDriver()	
+	maxProfit(0,0)
+	return c[m][n]
+end maxProfitDriver
+
+void maxProfit(i, j)
+	if ((i == 0) || (j == 0))
+		c[i][j] = 0
+	for x = 1 to j - 1
+		for y = 1 to i - 1
+			tempVert = c[i][x] + c[i][j - x]
+			tempHor = c[y][j] + c[i - y][j]			
+			if (tempVert > maxVertical)
+				maxVertical = tempVert
+			if (tempHor > maxHorizontal)
+				maxHorizontal = tempHor
+		endfor
+	endfor
+	
+	actualMax = max(maxVertical, maxHorizontal)
+	if (actualMax > p[i][j])
+		c[i][j] = actualMax
+	else
+		c[i][j] = p(i)(j)
+endmaxProfit
+\end{lstlisting}
+
+\end{solution}
+\fi
+
+\item[(b)] (5 points) Write a bottom-up procedure to compute $C[m,n]$ and
+analyze its running time as a function of $m$ and $n$.
+
+\ifnum\me<2
+\begin{solution}
+
+\begin{lstlisting}
+c[m + 1][n + 1]
+		
+maxProfitDriver()	
+	maxProfit(0,0)
+	return c[m][n]
+end maxProfitDriver
+
+void maxProfit(i, j)
+	if ((i == 0) || (j == 0))
+		c[i][j] = 0
+	for x = 1 to j - 1
+		for y = 1 to i - 1
+			tempVert = c[i][x] + c[i][j - x]
+			tempHor = c[y][j] + c[i - y][j]			
+			if (tempVert > maxVertical)
+				maxVertical = tempVert
+			if (tempHor > maxHorizontal)
+				maxHorizontal = tempHor
+		endfor
+	endfor
+	
+	actualMax = max(maxVertical, maxHorizontal)
+	if (actualMax > p[i][j])
+		c[i][j] = actualMax
+	else
+		c[i][j] = p(i)(j)
+endmaxProfit
+\end{lstlisting} 
+
+\end{solution}
+
+\fi
+
+\end{itemize}
+
+\newproblem{Dividing Chocolate Greedily}{8 points}
+
+Consider the following greedy solution for the above "Dividing Chocolate" problem. Given some piece of size $i\times j$, and some proposed (either horizontal or vertical) cut  of this piece, we say that the cut is "locally improving" if the sum of the prices for two resulting sub-pieces is bigger then the price $p[i,j]$ of the original uncut piece. The {\em best locally improving $(i,j)$-cut} is then the cut maximizing the difference between the sum of the prices of the two pieces and the original price $p[i,j]$ (if there are ties, any of the choices is fine).
+
+The algorithm now proceeds as follows. Starting from the original $m\times n$ piece, it finds the best locally improving $(m,n)$-cut, and then recursively finds the best locally improving cuts for the resulting pieces, until no such locally improving cuts are possible (i.e., all the remaining pieces cannot be subdivided further in a locally improving way).
+
+Show that this greedy solution is not a good solution by finding a counter-example. Make sure your counter-example is non-trivial: namely, $p[i,j]\ge p[k,t]$ where $i\ge k$ and $j\ge t$ (i.e., if one piece is included in a bigger piece, its price must be smaller).
+
+\ifnum\me<2
+\begin{solution}
+
+Proof by counter example:
+
+Let m = n = 2
+
+p(1,1) = 2
+
+p(1,2) = p(2,1) = 3
+
+p(2,2) = 6
+
+optimalPrice = cut at p(1,1) = 8.
+
+If we utilized the greedy algorithm, it would end up utilizing p(2,2) due to locally improving, compared to the optimal solution.
+
+\end{solution}
+\fi
+
+\newproblem{Greedy Matrix Multiplication}{10 points}
+
+Recall the dynamic programming solution for the matrix chain multiplication problem. Here we give two greedy candidate solutions for this problem. For each of the proposed solutions find a counter-example proving that it is not correct. 
+
+\begin{itemize}
+
+\item[(a)] (5 points) In each step we will "get rid" of the biggest possible dimension $p_i$ (intuitively, we want to "pay" for such huge $p_i$ only once). Formally, let $p_i$ be the biggest value of dimension: i.e., the matrix $A_{i}$ has dimension $p_{i-1}\times p_i$ and
+the matrix $A_{i+1}$ has dimension $p_i\times p_{i+1}$, where $p_j \leq p_i$ for all  $j$. Then we will multiply $A_i$ with $A_{i+1}$ first. After that we repeat the same greedy procedure on the remaining $n-1$ matrices. And so on until we get the final result.
+
+\ifnum\me<2
+\begin{solution}
+
+Let there be matrices $A_1$, $A_2$, $A_3$ such that
+
+$A_1$ is a (1x3) matrix
+
+$A_2$ is a (3x4) matrix
+
+$A_3$ is a (4x3) matrix
+
+
+\end{solution}
+\fi
+
+\item[(b)] (5 points) In each step choose such a pair of adjacent matrices $A_i$ and $A_{i+1}$ such that the cost of multiplication them is the smallest possible at this point. Namely, $p_{i-1}p_i p_{i+1}\le p_{j-1}p_j p_{j+1}$, for all $j$. Then multiply $A_i$ and $A_{i+1}$ first.
+After that we repeat the same greedy procedure on the remaining $n-1$ matrices. And so on until we get the final result.
+
+
+\ifnum\me<2
+\begin{solution}
+
+Let there be matrices $A_1$, $A_2$, $A_3$ such that
+
+$A_1$ is a (4x1) matrix
+
+$A_2$ is a (1x7) matrix
+
+$A_3$ is a (7x2) matrix
+
+\end{solution}
+\fi
+
+\end{itemize}
+
+\end{document}

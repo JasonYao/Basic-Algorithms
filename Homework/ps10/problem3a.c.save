@@ -1,0 +1,11 @@
+Graph BFS-Fix(node start)
+{
+	for (i = 1 to n)
+	{
+		int distance[] = ;
+		for (j = 1 to n)
+		{
+		}
+
+	}
+}

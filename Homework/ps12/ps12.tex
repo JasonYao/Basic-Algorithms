@@ -1,0 +1,326 @@
+%me=0 student solutions (ps file), me=1 - my solutions (sol file), me=2 - assignment (hw file)
+\def\me{0}
+\def\num{12}  %homework number
+\def\due{Monday, May 11}  %due date
+\def\course{CSCI-UA.0310-004/005 Basic Algorithms} %course name, changed only once
+\def\name{Jason Yao}   %student changes (instructor keeps!)
+%
+\iffalse
+INSTRUCTIONS: replace # by the homework number.
+(if this is not ps#.tex, use the right file name)
+
+  Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate TeX code.  Once you are done with your file, run
+
+  ``latex ps#.tex''
+
+from a UNIX prompt.  If your LaTeX code is clean, the latex will exit
+back to a prompt.  To see intermediate results, type
+
+  ``xdvi ps#.dvi'' (from UNIX prompt)
+  ``yap ps#.dvi'' (if using MikTex in Windows)
+
+after compilation. Once you are done, run
+
+  ``dvips ps#.dvi''
+
+which should print your file to the nearest printer.  There will be
+residual files called ps#.log, ps#.aux, and ps#.dvi.  All these can be
+deleted, but do not delete ps1.tex. To generate postscript file ps#.ps,
+run
+
+  ``dvips -o ps#.ps ps#.dvi''
+
+I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
+\fi
+%
+\documentclass[11pt]{article}
+\usepackage{amsfonts, amsmath}
+\usepackage{latexsym}
+
+%\usepackage{tikz}
+
+\setlength{\oddsidemargin}{.0in}
+\setlength{\evensidemargin}{.0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.4in}
+\setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{#1, Page \arabic{page}}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { {\bf \course} \hfill #2 }
+       \vspace{4mm}
+       \hbox to 5.78in { {\Large \hfill #5  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { {\it #3 \hfill #4} }
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcommand{\prob}{\arabic{pppp}}  %problem number
+\newcommand{\increase}{\addtocounter{pppp}{1}}  %problem number
+
+%first argument desription, second number of points
+\newcommand{\newproblem}[2]{
+\ifnum\me=0
+\ifnum\prob>0 \newpage \fi
+\increase
+\setcounter{page}{1}
+\handout{\name, Homework \num, Problem \arabic{pppp}}{\today}{Name: \name}{Due:
+\due}{Solutions to Problem \prob\ of Homework \num\ (#2)}
+\else
+\increase
+\section*{Problem \num-\prob~(#1) \hfill {#2}}
+\fi
+}
+
+%\newcommand{\newproblem}[2]{\increase
+%\section*{Problem \num-\prob~(#1) \hfill {#2}}
+%}
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+        \vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+                      {\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution Sketch:}}
+                      {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+{\end{tabbing}}
+
+%\newcommand{\eqref}[1]{Equation~(\ref{eq:#1})}
+
+\newcommand{\proc}[1]{\textnormal{\scshape#1}}
+\newcommand{\eof}{\proc{eof}}
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+%Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+
+\newcommand{\For}{\mbox{\bf For }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\Do}{\mbox{\bf Do }}
+\newcommand{\If}{\mbox{\bf If }}
+\newcommand{\Then}{\mbox{\bf Then }}
+\newcommand{\Else}{\mbox{\bf Else }}
+\newcommand{\While}{\mbox{\bf While }}
+\newcommand{\Repeat}{\mbox{\bf Repeat }}
+\newcommand{\Until}{\mbox{\bf Until }}
+\newcommand{\Return}{\mbox{\bf Return }}
+\newcommand{\Swap}{\mbox{\bf Swap }}
+
+\begin{document}
+
+\ifnum\me=0
+%\handout{PS\num}{\today}{Name: **** INSERT YOU NAME HERE ****}{Due:
+%\due}{Solutions to Problem Set \num}
+%
+%I collaborated with *********** INSERT COLLABORATORS HERE (INDICATING
+%SPECIFIC PROBLEMS) *************.
+\fi
+\ifnum\me=1
+\handout{PS\num}{\today}{Name: Yevgeniy Dodis}{Due: \due}{Solution
+{\em Sketches} to Problem Set \num}
+\fi
+\ifnum\me=2
+\handout{PS\num}{\today}{Lecturer: Yevgeniy Dodis}{Due: \due}{Problem
+Set \num}
+\fi
+
+
+\newproblem{Medical Emergency}{20 points}
+
+You are given a directed graph $G=(V,E)$ with non-negative edge
+weights $w(u,v)$ representing the time it takes to go from a node $u$
+to $v$ when $u$ and $v$ are directly connected. (We assume all $w(u,v)<\infty$ for simplicity.)
+Some subset $F$ of
+vertices in $G$ are pharmacies, while some other subset $D$ are
+doctor offices. You live at a node $s$ and have a medical
+emergency. You now need to go to some doctor office $d\in D$ to
+get a prescription for the drug, then to some pharmacy $f\in F$, and
+finally back home. Recall that a proper output must be the full path described above.
+However some paths are better then others.
+Solve the following variants of this problem, where each variant describes how to compare
+different valid paths when choosing the optimal path you are looking for. Each
+variant could be solved by one ``clever'' run of the Dijkstra's
+algorithm, on an appropriate modification of our graph $G$. You have
+to explain your choice and state the resulting running time as the function of $n$ (remember, we assume $m=\Theta(n^2)$ here, as $w(u,v)<\infty$).
+
+\begin{itemize}
+
+\item[(a)] (3 points) Assume only the distance from your home $s$ to the doctor's
+office matters (e.g., you need to get doctor's emergency help asap,
+and the time it then takes to the pharmacy and back home are not
+important).
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(b)] (5 points) Assume only the distance between the doctor office $d$ and
+the pharmacy $f$ matters. E.g., the doctor would perform some painful
+procedure, but does not have a tranquilizer to numb the subsequent
+pain. Thus, you must choose an office $d\in D$ and pharmacy $f\in F$
+with the smallest distance between them, but do not care how far $d$
+is from $s$ or $s$ is from $f$. (E.g., if there is a pharmacy in some
+doctor's office in Antarctica, you do not mind going there, as the
+answer you care will be $0$, even if you live in NYC.)\\
+\hint{Add an artificial source node $s'$ to $G$ and
+compute the distance from $s'$ to ``fill the blank'' in your new
+graph.}
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(c)] (5 points) Assume only the distance from the pharmacy $f$ back to
+home $s$ matters. E.g., the medicine must be administered by the
+pharmacist and has some quick side effect, so you must get to bed asap
+after taking the medicine in the pharmacy.\\
+\hint{Two solutions are possible: one does something to the edges of
+$G$, and the other again adds some artificial source similar to part
+(b).}
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(d)] (7 points) Finally, assume that the {\em overall} trip time from $s$
+to $d$ to $f$ to $s$ matters. Show how to combine the ideas in parts
+(a)-(c) to solve this variant.\\
+\hint{Make several ``copies'' of $G$ and connect them ``appropriately'' by
+$0$-weight edges. The copies will ensure that every valid path must
+pass through a doctor office followed by a pharmacy.}
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Negative Medical Emergency}{12 points}
+
+Consider the medical emergency problem, except some of the edge weights $w(u,v)$ in the original graph could be negative (but no negative cycles exist).
+
+\begin{itemize}
+
+\item[(a)] (4 points) Which of your solutions for parts (a)-(d) of the previous problem  would still work if you run Bellman-Ford instead of Dijkstra on the graphs you constructed? For those that work, please state the new running time. For those that do not, state the running time of the fastest algorithm you can find.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(b)] (4 points) Assume now that the original graph $G$ is a acyclic.
+Which of your solutions for parts (a)-(d) of the previous problem  would still work if you run  ``one iteration'' of Bellman-Ford instead of Dijkstra on the graphs you constructed? For those that work, please state the new running time. For those that do not, state the running time of the fastest algorithm you can find.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(c)] (4 points) Coming back to general (possibly cyclic) graphs, assume that you want to solve part (d) of the previous problem (but now with negative edge weights) for all possible home locations $s$, and also that we drop the assumption that $w(u,v)<\infty$. Design the fastest algorithm you can find, and state its running time as a function of $n$ and $m$ (which can now be much less than $n^2$).
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Arbitrage Tester}{16 points}
+
+You are given a directed graph $G=(V,E)$ representing some financial
+choices. Each edge $(u,v)\in E$ has a weight $w(u,v)$, where
+$w(u,v)>0$ represents a cost, and $w(u,v)<0$ represents a profit. Your
+initial portfolio is a vertex $s\in V$, and at each step you are
+allowed to go from your current node $u\in V$ to a neighboring node
+$v\in Adj(u)$, incurring a cost $w(u,v)$ if $w(u,v)>0$, or a profit
+$-w(u,v)$ otherwise.
+
+\begin{itemize}
+
+\item[(a)] (4 points) We say that a vertex $s$ is {\em super-lucky} if
+$s$ itself is part of a cycle $C$ of negative weight, so that starting
+from $s$ one can repeatedly come back to $s$ with some profit. Using
+the ``matrix multiplication'' approach, design $O(n^3\log n)$
+algorithm to find all super-lucky vertices.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(b)] (4 points)
+Say that $s$ is {\em lucky} if there exists a way to
+eventually make unbounded profit starting from $s$ (but not
+necessarily coming back to $s$ infinitely many times as with
+super-lucky vertices). Give the fastest algorithm you can for finding all
+lucky vertices (from scratch, without assuming you already solved part (a)).
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(c)] (4 points)  Solve the same problem as in part (b), but assuming somebody already gave you for free the list  of all super-lucky vertices (or, alternatively, you already ran your solution in part (a), and want to use it to compute lucky vertices faster). Namely, give the fastest algorithm you can think of for finding all lucky vertices given all super-lucky vertices.\\
+\hint{Make sure you use super-lucky vertices instead of computing from scratch!}
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(d)] (4 points) Assume $s$ is not lucky (and, hence, not super-lucky). Design a fast algorithm to compute the best finite ``financial strategy'' to make as much profit starting from $s$ as
+possible. State the running time of your algorithm.\\
+\hint{Think Bellman-Ford.}
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\end{itemize}
+
+\newproblem{Alternative APSP Algorithm} {12 points}
+
+Let $G = (V, E)$ be a directed graph with weighted edges; edge weights could be positive, negative or zero.
+
+\begin{itemize}
+\item[(a)] (4 points) Describe an $O(n^2)$ algorithm that takes as input $v \in V$ and returns an edge weighted graph $G' = (V', E')$ such that $V' = V \setminus \{v\}$ and the shortest path distance from $u$ to $w$ in $G'$ for any $u, w \in V'$ is equal to the shortest path distance from $u$ to $w$ in $G$.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(b)] (4 points) Now assume that you have already computed the shortest distance for all pairs of vertices in $G'$. Give an $O(n^2)$ algorithm that computes the shortest distance in $G$ from $v$ to all nodes in $V'$ and from all nodes in $V'$ to $v$.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+
+\item[(c)] (4 points) Use part (a) and (b) to give a recursive $O(n^3)$ algorithm to compute the shortest distance between all pairs of vertices $u, v \in V$.
+
+\ifnum\me<2
+\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\fi
+\end{itemize}
+
+
+
+\end{document}
