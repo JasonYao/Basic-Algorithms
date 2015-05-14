@@ -37,6 +37,7 @@ I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
 \documentclass[11pt]{article}
 \usepackage{amsfonts, amsmath}
 \usepackage{latexsym}
+\usepackage{listings}
 
 %\usepackage{tikz}
 
@@ -134,14 +135,14 @@ I assume you know how to print .ps files (``lpr -Pprinter ps#.ps'')
 \begin{document}
 
 \ifnum\me=0
-%\handout{PS\num}{\today}{Name: **** INSERT YOU NAME HERE ****}{Due:
+%\handout{PS\num}{\today}{Name: Jason Yao}{Due:
 %\due}{Solutions to Problem Set \num}
 %
 %I collaborated with *********** INSERT COLLABORATORS HERE (INDICATING
 %SPECIFIC PROBLEMS) *************.
 \fi
 \ifnum\me=1
-\handout{PS\num}{\today}{Name: Yevgeniy Dodis}{Due: \due}{Solution
+\handout{PS\num}{\today}{Name: Jason Yao}{Due: \due}{Solution
 {\em Sketches} to Problem Set \num}
 \fi
 \ifnum\me=2
@@ -176,7 +177,10 @@ and the time it then takes to the pharmacy and back home are not
 important).
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+\lstinputlisting[language=C]{problem1a.c}
+\end{solution}
 \fi
 
 \item[(b)] (5 points) Assume only the distance between the doctor office $d$ and
@@ -192,8 +196,12 @@ compute the distance from $s'$ to ``fill the blank'' in your new
 graph.}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+\lstinputlisting[language=C]{problem1b.c}
+\end{solution}
 \fi
+\newpage
 
 \item[(c)] (5 points) Assume only the distance from the pharmacy $f$ back to
 home $s$ matters. E.g., the medicine must be administered by the
@@ -204,8 +212,13 @@ $G$, and the other again adds some artificial source similar to part
 (b).}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+\lstinputlisting[language=C]{problem1c.c}
+\end{solution}
 \fi
+\newpage
+
 
 \item[(d)] (7 points) Finally, assume that the {\em overall} trip time from $s$
 to $d$ to $f$ to $s$ matters. Show how to combine the ideas in parts
@@ -215,7 +228,11 @@ $0$-weight edges. The copies will ensure that every valid path must
 pass through a doctor office followed by a pharmacy.}
 
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+
+\lstinputlisting[language=C]{problem1d.c}
+\end{solution}
 \fi
 
 \end{itemize}

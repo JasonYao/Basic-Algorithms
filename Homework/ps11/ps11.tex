@@ -163,9 +163,9 @@ on undirected graph?}
 \begin{solution}
 
 \lstinputlisting[language=C]{problem1a.c}
-
 \end{solution}
 \fi
+\newpage
 
 \item[(b)] (3 points)  Extend the above algorithm to actually print the cycle, in
 case $G$ is cyclic.
@@ -173,8 +173,7 @@ case $G$ is cyclic.
 \ifnum\me<2
 \begin{solution}
 
-
-
+\lstinputlisting[language=C]{problem1b.c}
 \end{solution}
 \fi
 
@@ -191,19 +190,22 @@ time.
 \ifnum\me<2
 \begin{solution}
 
+We say that there are $n$ vertex (children), with a list of $m$ edges (statements) with direction. Direction is from some $i$ to some $j$ such that $i$ "hates" $j$. This forms a directed graph G, and we can order this line via BFS, assuming no cycles inside of G.
 
- 
-
-
-
+\lstinputlisting[language=C]{problem2a.c}
 \end{solution}
 \fi
+
+\newpage
 
 \item[(b)] (6 points) Suppose instead you want to arrange the children in rows, such that if $i$ hates $j$
 then $i$ must be in a (strictly) lower numbered row than $j$. Give an efficient algorithm to
 find the minimum number of rows needed, if it is possible.
 \ifnum\me<2
-\begin{solution}   ***************** INSERT YOUR SOLUTION HERE ***************   \end{solution}
+\begin{solution}
+
+\lstinputlisting[language=C]{problem2b.c}
+\end{solution}
 \fi
 \end{itemize}
 
@@ -305,11 +307,11 @@ $w_i$ = fat edge on cycling
 $w_i$ exists in the set of MST(G)
 	remove $w_i$ => 2 disjoint subtrees
 	
-look at cycle from u -------> t
+look at cycle from u $\rightarrow$ t
 find edge ($u_{new}$, $t_{new}$),
-$u_{new} \exists V_1$, $t_{new} \exists V_2$
+$u_{new} \exists V_1$, $t_{new} \in V_2$
 
-=> new MST has weight $\leq$ old MST
+$\rightarrow$ new MST has weight $\leq$ old MST
 
 ($w_{new} \leq w_1$)
 
