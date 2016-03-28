@@ -48,10 +48,11 @@ Language(s): LaTeX
 	- Dynamic programming
 	- Greedy approaches
 	- Divide & Conquer
-	- Runtime Analysis of algorithms
+	- Runtime analysis of algorithms
 		- Big-O, Little-O
 		- Theta
 		- Little-Omega, Big-Omega
+	- Correctness analysis of algorithms
 		- Proof by induction
 		- Domain/Range substitution
 		- Master theorem   
